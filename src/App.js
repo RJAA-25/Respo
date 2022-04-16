@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import { Route, Switch, Redirect } from "react-router-dom";
 
-function App() {
+import Layout from "./UI/Layout";
+import Home from "./Pages/Home";
+import Login from "./Pages/Login";
+import Register from "./Pages/Register";
+import Dashboard from "./Pages/Dashboard";
+
+const App = () => {
+  let isLoggedIn = false;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout>
+      <Switch>
+        <Route path="/" exact>
+          <Home />
+        </Route>
+        <Route path="/login">
+          {isLoggedIn ? <Redirect to="/dashboard" /> : <Login />}
+        </Route>
+        <Route path="/register">
+          {isLoggedIn ? <Redirect to="/dashboard" /> : <Register />}
+        </Route>
+        <Route path="/dashboard">
+          {isLoggedIn ? <Dashboard /> : <Redirect to="/login" />}
+        </Route>
+        <Route path="*">Page not Found</Route>
+      </Switch>
+    </Layout>
   );
-}
+};
 
 export default App;
